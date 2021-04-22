@@ -12,7 +12,7 @@ import {
 
 import { Feather } from '@expo/vector-icons'
 
-import wateringImg from '../assets/watering.png'
+import wateringImg from '../assets/ilustra.png'
 import colors from '../styles/colors'
 import fonts from '../styles/fonts'
 import { useNavigation } from '@react-navigation/core'
