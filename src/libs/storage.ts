@@ -28,7 +28,7 @@ export async function savePlant(plant: PlantsProps) : Promise<void>{
 
         const newPlant = {
             [plant.id]:{
-                data: plant
+                data: plant,                
             }
         }
 
