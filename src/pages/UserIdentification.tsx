@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import {
     StyleSheet,
@@ -9,8 +8,11 @@ import {
     TextInput,
     KeyboardAvoidingView,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    Alert
 } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Button } from '../components/Button'
 
@@ -23,8 +25,26 @@ export function UserIdentification(){
     const [name, setName] = useState<string>()
     const navigation = useNavigation()
 
-    function handleSubmit(){
-        navigation.navigate("Confirmation")
+    async function handleSubmit(){
+        if(!name)
+            return Alert.alert('Me diga como chamar você 😢')
+
+        try{
+            // Colocar nesse formato para garantir que nao haja interferencia de outros apps (<nomedoapp>:<dado>)
+            await AsyncStorage.setItem('@plantmanager:user', name)
+
+            navigation.navigate("Confirmation", {
+                title: 'Prontinho',
+                subtitle: 'Agora vamos começar a cuidar das suas plantinhas com muito cuidado.',
+                buttonTitle: 'Começar',
+                icon: 'smile',
+                nextScreen: 'PlantSelect'
+            })
+        }catch{
+            Alert.alert('Não foi possível salvar seu nome 😢')
+        }
+
+        
     }
 
     function handleInputBlur(){
@@ -68,6 +88,7 @@ export function UserIdentification(){
                                 onBlur={handleInputBlur}
                                 onFocus={handleInputFocus}
                                 onChangeText={handleInputChange}
+                                maxLength={15}
                             />
 
                             <View style={styles.footer}>
